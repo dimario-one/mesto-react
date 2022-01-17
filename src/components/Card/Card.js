@@ -15,7 +15,7 @@ const Card  =(props) => {
                 <h2 className="cards__text cards__type_temlate_text">{props.title}</h2>
                     <div className="cards__minicontainer">
                         <button className="cards__like" aria-label="like" type="button"></button>
-                        <span className="cards__like-counter">0</span>
+                        <span className="cards__like-counter"></span>
                     </div>
             </div>
         </li>   

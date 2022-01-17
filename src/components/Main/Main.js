@@ -42,13 +42,13 @@ function Main(props) {
                 setUserName(newName);
                 const newDescription = data.about
                 setUserDescription (newDescription);
-            },[])
+            })
             .catch(err => console.log(err))
-    },[userName,userDescription,userAvatar])
+    },[])
     
  
     const cardsContent = cards.map(item =>{
-       return <Card
+       return (<Card
         key={item.id}
         src={ item.src }
         title={ item.title }
@@ -56,7 +56,7 @@ function Main(props) {
         alt ={ item.alt }
         card={item}
         onCardClick={props.onCardClick}
-        />
+        />)
     })
 
     return (
@@ -64,7 +64,7 @@ function Main(props) {
         <main>
         <section className="profile">
             <a className="profile__avatar-link" href="#">
-                    <div className="profile__avatar" style={{ backgroundImage: `url(${userAvatar})` }} alt="Аватар" onClick={props.onEditAvatar}></div>
+                    <img className="profile__avatar" src={userAvatar} alt="Аватар" onClick={props.onEditAvatar}/>
                     <img className="profile__avatar-edit" alt="Аватар ховер" src={avatarHover}  onClick={props.onEditAvatar}/> 
             </a>
             <div className="profile__container-big">
