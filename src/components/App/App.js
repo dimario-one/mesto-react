@@ -34,7 +34,7 @@ function App() {
         setEditAvatarPopupOpen(false)
         setEditProfilePopupOpen(false)
         setAddPlacePopupOpen(false)
-        setSelectedCard("")
+        setSelectedCard('')
     }
 
     return ( < div className = "page">
