@@ -31,7 +31,7 @@ class Api {
     }
 
 
-    removeCardLike(cardsId) {
+    changeLikeCardStatus(cardsId) {
         return fetch(`${this._url}/cards/${cardsId}/likes`, {
                 method: 'DELETE',
                 headers: this._headers,
@@ -59,7 +59,7 @@ class Api {
             .then(onResponce)
     }
 
-    updateUserInfo(dataUser) {
+    setUserInfo(dataUser) {
         console.log(dataUser, "dataUser")
         return fetch(`${this._url}/users/me`, {
             method: 'PATCH',
