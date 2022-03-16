@@ -48,6 +48,7 @@ function App() {
         api.getCards()
             .then(data => {
                 let newCards = data.map(item => {
+                    console.log(item,"item");
                     return {
                         key: item._id,
                         id: item._id,
@@ -67,7 +68,7 @@ function App() {
 
         api.getUserInfo()
             .then(data => {
-                const newCurrentUser = { avatar: data.avatar, name: data.name, description: data.about, id: data._id }
+                const newCurrentUser = { avatar: data.avatar, name: data.name, description: data.about, id: data._id}
                 setCurrentUser(newCurrentUser);
             })
             .catch(err => console.log(err))
@@ -85,21 +86,16 @@ function App() {
     }
 
     function handleCardLike(card) {
-        console.log(card, "card")
+        console.log(card.src,"card.src")
         // Снова проверяем, есть ли уже лайк на этой карточке
         const isLiked = card.likes.some((i) => i._id === currentUser.id);
         // Отправляем запрос в API и получаем обновлённые данные карточки
-        if (!isLiked) {
             api.setCardLike(card.id, !isLiked).then((newCard) => {
-
                 setCards((state) => state.map((c) => c.id === card.id ? newCard : c));
-                console(cards,"cards")
             });
-        } else {
             api.changeLikeCardStatus(card.id, isLiked).then((newCard) => {
                 setCards((state) => state.map((c) => c.id === card.id ? newCard : c));
-            })
-        }
+            })  
     }
 
     const handleUpdateAvatar = (data) => {
@@ -140,6 +136,7 @@ function App() {
     const cardsContent = cards.map(item => {
         return (<Card
             key={item.id}
+            id={item.id}
             src={item.src}
             title={item.title}
             subtitle={item.subtitle}
@@ -157,6 +154,7 @@ function App() {
                 < div className="page">
                     <Header />
                     <Main
+                   
                         onEditProfile={handleEditProfileClick}
                         onAddPlace={handleAddPlaceClick}
                         onEditAvatar={handleEditAvatarClick}
