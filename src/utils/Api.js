@@ -22,9 +22,10 @@ class Api {
             .then(onResponce)
     }
 
-    setCardLike(cardsId) {
+    setCardLike(cardsId, method) {
+        console.log(method, 'method');
         return fetch(`${this._url}/cards/${cardsId}/likes`, {
-                method: 'PUT',
+                method: method,
                 headers: this._headers,
             })
             .then(onResponce)

@@ -21,7 +21,7 @@ function App() {
     const [cards, setCards] = useState([]);
 
 
-  
+
     function handleCardDelete(card) {
         api.removeCard(card._id)
             .then(() => {
@@ -44,31 +44,31 @@ function App() {
     }
 
     useEffect(() => {
-
         api.getCards()
             .then(data => {
                 let newCards = data.map(item => {
-                    console.log(item,"item");
                     return {
-                        key: item._id,
-                        id: item._id,
-                        src: item.link,
+                        _id: item._id,
+                        link: item.link,
                         alt: item.name,
                         subtitle: item.owner.about,
                         title: item.name,
                         likes: item.likes
                     }
+
                 })
                 setCards(newCards)
+                console.log(newCards, "поменяли стейт")
             })
             .catch(err => console.log(err))
+
     }, [])
 
     useEffect(() => {
 
         api.getUserInfo()
             .then(data => {
-                const newCurrentUser = { avatar: data.avatar, name: data.name, description: data.about, id: data._id}
+                const newCurrentUser = { avatar: data.avatar, name: data.name, description: data.about, id: data._id }
                 setCurrentUser(newCurrentUser);
             })
             .catch(err => console.log(err))
@@ -86,16 +86,26 @@ function App() {
     }
 
     function handleCardLike(card) {
-        console.log(card.src,"card.src")
+        console.log("карточка дошла до места")
         // Снова проверяем, есть ли уже лайк на этой карточке
+
         const isLiked = card.likes.some((i) => i._id === currentUser.id);
         // Отправляем запрос в API и получаем обновлённые данные карточки
-            api.setCardLike(card.id, !isLiked).then((newCard) => {
-                setCards((state) => state.map((c) => c.id === card.id ? newCard : c));
+        console.log(isLiked, 'isLiked');
+         let  method = isLiked ? 'DELETE' : 'PUT';
+            api.setCardLike(card._id, method).then((newCard) => {
+
+                console.log(newCard, 'newCard')
+               setCards((state) => state.map((c) => {
+                   
+                //    console.log(c, 'c')
+                   return c._id === card.id ? newCard : c;
+               }));
+                console.log("put")
             });
-            api.changeLikeCardStatus(card.id, isLiked).then((newCard) => {
-                setCards((state) => state.map((c) => c.id === card.id ? newCard : c));
-            })  
+        
+
+
     }
 
     const handleUpdateAvatar = (data) => {
@@ -133,20 +143,21 @@ function App() {
         setSelectedCard({ name: '', link: '' })
     }
 
-    const cardsContent = cards.map(item => {
-        return (<Card
-            key={item.id}
-            id={item.id}
-            src={item.src}
-            title={item.title}
-            subtitle={item.subtitle}
-            alt={item.alt}
-            card={item}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-            onCardClick={handleCardClick}
-        />)
-    })
+    // const cardsContent = cards.map(item => {
+    //     console.log(item,"item")
+    //     return (<Card
+    //         key={`card-${item._id}`}
+    //         _id={item._id}
+    //         src={item.link}
+    //         title={item.title}
+    //         subtitle={item.subtitle}
+    //         alt={item.alt}
+    //         card={item}
+    //         onCardLike={handleCardLike}
+    //         onCardDelete={handleCardDelete}
+    //         onCardClick={handleCardClick}
+    //     />)
+    // })
 
     return (
         <CurrentUserContext.Provider value={currentUser}>
@@ -154,14 +165,15 @@ function App() {
                 < div className="page">
                     <Header />
                     <Main
-                   
+
                         onEditProfile={handleEditProfileClick}
                         onAddPlace={handleAddPlaceClick}
                         onEditAvatar={handleEditAvatarClick}
                         onCardDelete={handleCardDelete}
                         onCardClick={handleCardClick}
                         card={cards}
-                        cardsContent={cardsContent}
+                        onCardLike={handleCardLike}
+                        // cardsContent={cardsContent}
                         handleCardLike={handleCardLike}
                     >
                         <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />

@@ -1,4 +1,5 @@
 import React from 'react';
+import Card from '../Card/Card';
 import buttonEdit from '../../images/editbutton.svg'
 import buttonAdd from '../../images/plus.svg'
 import api from '../../utils/Api';
@@ -6,7 +7,6 @@ import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
 
 function Main(props) {
     const currentUser = React.useContext(CurrentUserContext);     
-
 
     return (
 
@@ -33,7 +33,20 @@ function Main(props) {
             </section>
             <section className="cards"  >
                 <ul className="cards__items" >
-                    {props.cardsContent}
+                {props.card.map(item => {
+        return (<Card
+            key={`card-${item._id}`}
+            _id={item._id}
+            src={item.link}
+            title={item.title}
+            subtitle={item.subtitle}
+            alt={item.alt}
+            card={item}
+            onCardLike={ props.onCardLike}
+            onCardDelete={ props.onCardDelete}
+            onCardClick={ props.onCardClick}
+        />)
+    })}
                 </ul>
             </section>
         </main>
