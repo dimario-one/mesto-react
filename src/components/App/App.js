@@ -33,8 +33,10 @@ function App() {
     }
 
     const handleAddPlaceSubmit = (newCard) => {
+     console.log(newCard,"newCard")
         api.createNewCard(newCard)
             .then((cards) => {
+                console.log(cards,"cards")
                 setCards([newCard, ...cards]);
                 closeAllPopups()
             })
@@ -46,19 +48,19 @@ function App() {
     useEffect(() => {
         api.getCards()
             .then(data => {
+           
                 let newCards = data.map(item => {
                     return {
                         _id: item._id,
                         link: item.link,
                         alt: item.name,
                         subtitle: item.owner.about,
-                        title: item.name,
+                        name: item.name,
                         likes: item.likes
                     }
-
                 })
                 setCards(newCards)
-                console.log(newCards, "поменяли стейт")
+                
             })
             .catch(err => console.log(err))
 
@@ -68,13 +70,15 @@ function App() {
 
         api.getUserInfo()
             .then(data => {
-                const newCurrentUser = { avatar: data.avatar, name: data.name, description: data.about, id: data._id }
+              
+                const newCurrentUser = { avatar: data.avatar, name: data.name, description: data.about, id: data._id, link: data.link }
                 setCurrentUser(newCurrentUser);
             })
             .catch(err => console.log(err))
     }, [])
 
     const handleUpdateUser = (data) => {
+    
         api.setUserInfo(data)
             .then((res) => {
                 setCurrentUser(res)
@@ -86,30 +90,25 @@ function App() {
     }
 
     function handleCardLike(card) {
-        console.log("карточка дошла до места")
         // Снова проверяем, есть ли уже лайк на этой карточке
-
         const isLiked = card.likes.some((i) => i._id === currentUser.id);
-        // Отправляем запрос в API и получаем обновлённые данные карточки
-        console.log(isLiked, 'isLiked');
-         let  method = isLiked ? 'DELETE' : 'PUT';
-            api.setCardLike(card._id, method).then((newCard) => {
+        // Отправляем запрос в API и получаем обновлённые данные карточки  
+        let method = isLiked ? 'DELETE' : 'PUT';
+        api.setCardLike(card._id, method).then((newCard) => {
 
-                console.log(newCard, 'newCard')
-               setCards((state) => state.map((c) => {
-                   
-                //    console.log(c, 'c')
-                   return c._id === card.id ? newCard : c;
-               }));
-                console.log("put")
-            });
-        
+            setCards((state) => state.map((c) => {
+                return c._id === card._id ? newCard : c;
+            }));
+
+        });
+
 
 
     }
 
     const handleUpdateAvatar = (data) => {
-        api.patchUserAvatar(data)
+
+        api.changeAvatar(data)
             .then((res) => {
                 setCurrentUser(res)
                 closeAllPopups()
@@ -134,6 +133,7 @@ function App() {
 
     const handleAddPlaceClick = () => {
         setIsAddPlacePopupOpen(true)
+     
     }
 
     const closeAllPopups = () => {
@@ -142,22 +142,6 @@ function App() {
         setIsAddPlacePopupOpen(false)
         setSelectedCard({ name: '', link: '' })
     }
-
-    // const cardsContent = cards.map(item => {
-    //     console.log(item,"item")
-    //     return (<Card
-    //         key={`card-${item._id}`}
-    //         _id={item._id}
-    //         src={item.link}
-    //         title={item.title}
-    //         subtitle={item.subtitle}
-    //         alt={item.alt}
-    //         card={item}
-    //         onCardLike={handleCardLike}
-    //         onCardDelete={handleCardDelete}
-    //         onCardClick={handleCardClick}
-    //     />)
-    // })
 
     return (
         <CurrentUserContext.Provider value={currentUser}>
@@ -173,11 +157,10 @@ function App() {
                         onCardClick={handleCardClick}
                         card={cards}
                         onCardLike={handleCardLike}
-                        // cardsContent={cardsContent}
                         handleCardLike={handleCardLike}
                     >
-                        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} />
-                        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} />
+                        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} EditProfilePopup={handleUpdateUser}/>
+                        <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
                         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
                         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
 

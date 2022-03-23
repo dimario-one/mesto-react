@@ -1,5 +1,5 @@
 import '../../index.css';
-import React from 'react';
+import React,{  useState } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
 import PopupWithForm from '../PopupWithForm/PopupWithForm.js';
 
@@ -7,15 +7,25 @@ import PopupWithForm from '../PopupWithForm/PopupWithForm.js';
 function AddPlacePopup(props) {
 
     const currentUser = React.useContext(CurrentUserContext);
+    const [name, setName ] = useState('');
+    const [link, setLink ] = useState('');
 
-    function handleSubmit(e) {
-        e.preventDefault();
-    
+    const handleNameChange = (e) => {
+        setName(e.target.value)
+      } 
+      
+      const handlePlaceChange = (e) => {
+        setLink(e.target.value)
+      } 
+      const handleSubmit = (e) => {
+        e.preventDefault()
         props.onAddPlace({
-            name: currentUser.curent.name,
-            link: currentUser.curent.link
-        });
-    }
+          name,
+          link,
+        })
+        // setName('')
+        // setLink('')
+      }
 
     return (
         <PopupWithForm
@@ -24,9 +34,9 @@ function AddPlacePopup(props) {
             buttonText={"Создать"}
             onClose={props.onClose}
             isOpen={props.isOpen}
+            onSubmit={handleSubmit}
         >
             <input
-                onSubmit={handleSubmit}
                 className="popup__input popup__input_type_name-pic"
                 placeholder="Название"
                 type="text"
@@ -34,6 +44,8 @@ function AddPlacePopup(props) {
                 name="name"
                 minLength="2"
                 maxLength="30"
+                value={name}
+                onChange={handleNameChange}
                 required >
             </input>
             <span id="pic-card-error" className="popup__error popup__error_visible" ></span>
@@ -43,10 +55,11 @@ function AddPlacePopup(props) {
                 type="url"
                 id="link-card"
                 name="link"
+                value={link}
+                onChange={handlePlaceChange}
                 required >
             </input>
             <span id="link-card-error" className="popup__error popup__error_visible" ></span>
-
         </PopupWithForm>
     )
 }

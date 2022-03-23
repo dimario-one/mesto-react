@@ -23,7 +23,7 @@ class Api {
     }
 
     setCardLike(cardsId, method) {
-        console.log(method, 'method');
+     
         return fetch(`${this._url}/cards/${cardsId}/likes`, {
                 method: method,
                 headers: this._headers,
@@ -41,7 +41,6 @@ class Api {
     }
 
     changeAvatar(ava) {
-        console.log(ava, "ava")
         return fetch(`${this._url}/users/me/avatar`, {
                 method: 'PATCH',
                 headers: this._headers,
@@ -61,18 +60,19 @@ class Api {
     }
 
     setUserInfo(dataUser) {
-        console.log(dataUser, "dataUser")
+       
         return fetch(`${this._url}/users/me`, {
             method: 'PATCH',
             headers: this._headers,
             body: JSON.stringify({
                 name: dataUser.name,
-                about: dataUser.job
+                about: dataUser.about
             })
         }).then(onResponce)
     }
 
     createNewCard(data) {
+        console.log(data,"data------")
         return fetch(`${this._url}/cards`, {
             method: 'POST',
             headers: this._headers,

@@ -27,9 +27,9 @@ function EditProfilePopup(props) {
     function handleSubmit(e) {
         // Запрещаем браузеру переходить по адресу формы
         e.preventDefault();
-      
+      console.log(props,"props")
         // Передаём значения управляемых компонентов во внешний обработчик
-        props.onUpdateUser({
+        props.EditProfilePopup({
           name,
           about: description,
         });
@@ -52,6 +52,7 @@ function EditProfilePopup(props) {
                 minLength="2"
                 maxLength="40"
                 onChange={handleNameChange}
+                value={name}
                  >
                
             </input>
@@ -68,9 +69,8 @@ function EditProfilePopup(props) {
                 minLength="2"
                 maxLength="200" 
                 onChange={handleDescriptionChange}
+                value={description}
                 >
-              
-         
             </input>
             <span
                 id="prof-card-error"

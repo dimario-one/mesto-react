@@ -22,7 +22,7 @@ function Main(props) {
                         <h1 className="profile__text-title">{currentUser.name}</h1>
                         <button className="profile__edit-button" type="button" onClick={props.onEditProfile}><img src={buttonEdit} alt="Картинка" /></button>
                     </div>
-                    <p className="profile__text-subtitle">{currentUser.description}</p>
+                    <p className="profile__text-subtitle">{currentUser.about}</p>
                 </div>
                 <button className="profile__add-button" type="button" onClick={props.onAddPlace}><img className="profile__add-button-img" src={buttonAdd} alt="Плюс" /></button>
             </section>
@@ -38,7 +38,7 @@ function Main(props) {
             key={`card-${item._id}`}
             _id={item._id}
             src={item.link}
-            title={item.title}
+            title={item.name}
             subtitle={item.subtitle}
             alt={item.alt}
             card={item}
