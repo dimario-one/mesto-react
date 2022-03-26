@@ -52,6 +52,7 @@ class Api {
     }
 
     removeCard(cardsId) {
+        console.log(cardsId,"cardsId------")
         return fetch(`${this._url}/cards/${cardsId}`, {
                 method: 'DELETE',
                 headers: this._headers,
@@ -72,7 +73,6 @@ class Api {
     }
 
     createNewCard(data) {
-        console.log(data,"data------")
         return fetch(`${this._url}/cards`, {
             method: 'POST',
             headers: this._headers,

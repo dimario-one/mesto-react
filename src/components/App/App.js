@@ -23,9 +23,11 @@ function App() {
 
 
     function handleCardDelete(card) {
+        console.log("Меня нажали в Апп")
         api.removeCard(card._id)
             .then(() => {
                 setCards(cards.filter(data => data._id !== card._id));
+                console.log("remove в Апп")
             })
             .catch((err) => {
                 console.error(err);
@@ -33,10 +35,8 @@ function App() {
     }
 
     const handleAddPlaceSubmit = (newCard) => {
-     console.log(newCard,"newCard")
         api.createNewCard(newCard)
-            .then((cards) => {
-                console.log(cards,"cards")
+            .then((newCard) => {
                 setCards([newCard, ...cards]);
                 closeAllPopups()
             })
@@ -54,7 +54,8 @@ function App() {
                         _id: item._id,
                         link: item.link,
                         alt: item.name,
-                        subtitle: item.owner.about,
+                        id: item.owner._id,
+                        about: item.owner.about,
                         name: item.name,
                         likes: item.likes
                     }
@@ -71,7 +72,7 @@ function App() {
         api.getUserInfo()
             .then(data => {
               
-                const newCurrentUser = { avatar: data.avatar, name: data.name, description: data.about, id: data._id, link: data.link }
+                const newCurrentUser = { avatar: data.avatar, name: data.name, about: data.about, id: data._id, link: data.link }
                 setCurrentUser(newCurrentUser);
             })
             .catch(err => console.log(err))
@@ -163,7 +164,6 @@ function App() {
                         <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
                         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
                         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-
                     </Main>
                     <Footer />
                 </div>
