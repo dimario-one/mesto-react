@@ -1,5 +1,4 @@
-import '../../index.css';
-import React,{  useState } from 'react';
+import React,{  useState ,useEffect} from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
 import PopupWithForm from '../PopupWithForm/PopupWithForm.js';
 
@@ -23,9 +22,13 @@ function AddPlacePopup(props) {
           name,
           link,
         })
-        // setName('')
-        // setLink('')
       }
+
+      useEffect(() => {
+        setLink('')
+        setName('')
+      }, [props.isOpen])
+    
 
     return (
         <PopupWithForm

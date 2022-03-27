@@ -45,7 +45,7 @@ function handleDeleteClick (){
             <h2 className="cards__text cards__type_temlate_text" > {props.title}</h2>
             <div className="cards__minicontainer" >
                 <button className={cardLikeButtonClassName} onClick={handleLikeClick} aria-label="like" type="button"></button>
-                <span className="cards__like-counter" >
+                <span className="cards__like-counter" >{props.card.likes.length}
                 </span> </div> </div>
     </li>
     )

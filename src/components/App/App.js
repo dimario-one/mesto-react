@@ -4,7 +4,6 @@ import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import ImagePopup from '../ImagePopup/ImagePopup';
 import api from '../../utils/Api';
-import '../../index.css';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext.js';
 import Card from '../Card/Card';
 import EditProfilePopup from '../EditProfilePopup/EditProfilePopup.js';
@@ -20,15 +19,14 @@ function App() {
     const [currentUser, setCurrentUser] = useState({});
     const [cards, setCards] = useState([]);
 
-
-
     function handleCardDelete(card) {
-        console.log("Меня нажали в Апп")
         api.removeCard(card._id)
             .then(() => {
-                setCards(cards.filter(data => data._id !== card._id));
-                console.log("remove в Апп")
-            })
+                setCards((state) => state.filter((data) => {
+                    return data._id !== card._id;
+                // setCards(cards.filter(data => data._id !== card._id))
+
+            }))})
             .catch((err) => {
                 console.error(err);
             })
@@ -96,15 +94,12 @@ function App() {
         // Отправляем запрос в API и получаем обновлённые данные карточки  
         let method = isLiked ? 'DELETE' : 'PUT';
         api.setCardLike(card._id, method).then((newCard) => {
-
             setCards((state) => state.map((c) => {
                 return c._id === card._id ? newCard : c;
             }));
-
+        }).catch((err) => {
+            console.error(err);
         });
-
-
-
     }
 
     const handleUpdateAvatar = (data) => {
@@ -150,7 +145,6 @@ function App() {
                 < div className="page">
                     <Header />
                     <Main
-
                         onEditProfile={handleEditProfileClick}
                         onAddPlace={handleAddPlaceClick}
                         onEditAvatar={handleEditAvatarClick}
