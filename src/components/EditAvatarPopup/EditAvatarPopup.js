@@ -1,4 +1,3 @@
-import '../../index.css';
 import { React, useRef, useContext } from 'react';
 import PopupWithForm from '../PopupWithForm/PopupWithForm';
 
