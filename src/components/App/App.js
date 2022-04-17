@@ -24,9 +24,10 @@ function App() {
             .then(() => {
                 setCards((state) => state.filter((data) => {
                     return data._id !== card._id;
-                // setCards(cards.filter(data => data._id !== card._id))
+                    // setCards(cards.filter(data => data._id !== card._id))
 
-            }))})
+                }))
+            })
             .catch((err) => {
                 console.error(err);
             })
@@ -46,7 +47,7 @@ function App() {
     useEffect(() => {
         api.getCards()
             .then(data => {
-           
+
                 let newCards = data.map(item => {
                     return {
                         _id: item._id,
@@ -59,7 +60,7 @@ function App() {
                     }
                 })
                 setCards(newCards)
-                
+
             })
             .catch(err => console.log(err))
 
@@ -69,7 +70,7 @@ function App() {
 
         api.getUserInfo()
             .then(data => {
-              
+
                 const newCurrentUser = { avatar: data.avatar, name: data.name, about: data.about, id: data._id, link: data.link }
                 setCurrentUser(newCurrentUser);
             })
@@ -77,7 +78,7 @@ function App() {
     }, [])
 
     const handleUpdateUser = (data) => {
-    
+
         api.setUserInfo(data)
             .then((res) => {
                 setCurrentUser(res)
@@ -129,7 +130,7 @@ function App() {
 
     const handleAddPlaceClick = () => {
         setIsAddPlacePopupOpen(true)
-     
+
     }
 
     const closeAllPopups = () => {
@@ -144,7 +145,16 @@ function App() {
             < div className="body">
                 < div className="page">
                     <Header />
-                    <Main
+                    <Routes>
+                        <ProtectedRoute />
+                        <Route exact path="/">
+                            {loggedIn ? <Redirect to="/sign-in" /> : <Redirect to="/sign-up" />}
+                        </Route>
+                        < Route path="/sign-in"><Login /></Route>
+                        < Route path="/sign-up">
+                            < Register
+                            /></Route>
+                        {/* <Main
                         onEditProfile={handleEditProfileClick}
                         onAddPlace={handleAddPlaceClick}
                         onEditAvatar={handleEditAvatarClick}
@@ -158,7 +168,8 @@ function App() {
                         <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
                         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
                         <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-                    </Main>
+                    </Main> */}
+                    </Routes>
                     <Footer />
                 </div>
             </div>
